@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff3f8">
+  <meta name="description" content="Una carta para July, con cariño.">
+  <meta property="og:title" content="Una carta para July">
+  <meta property="og:description" content="Unas palabras, guardadas con cariño.">
+  <title>Una carta para July</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='7' y='16' width='50' height='35' rx='5' fill='%23f1d5df' stroke='%23955b72' stroke-width='2'/%3E%3Cpath d='m8 19 24 18 24-18' fill='none' stroke='%23955b72' stroke-width='2'/%3E%3C/svg%3E">
+  <style>
+    /* PALETA: todo el diseño usa estas variables. */
+    :root {color-scheme:light; --bg:#fff3f8; --paper:#fffefe; --ink:#664650; --rose:#ad5b80; --muted:#8d6075; --line:#f0d4e1; --sans:"Trebuchet MS","Segoe UI",sans-serif; --serif:Georgia,"Times New Roman",serif}
+    * {box-sizing:border-box}
+    html {scroll-behavior:smooth; scroll-padding-top:calc(78px + env(safe-area-inset-top,0px)); -webkit-text-size-adjust:100%; text-size-adjust:100%}
+    body {margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); -webkit-tap-highlight-color:transparent; isolation:isolate}
+    a {color:inherit; touch-action:manipulation}
+    button {font:inherit; cursor:pointer; touch-action:manipulation}
+    button:focus-visible,a:focus-visible {outline:3px solid var(--rose); outline-offset:5px}
+    [tabindex="-1"]:focus {outline:none}
+    [hidden] {display:none!important}
+    ::selection {background:#ffdae9; color:#603849}
+    .symbols {position:absolute; width:0; height:0; overflow:hidden}
+    .icon {display:block; width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+    .sr-only {position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0}
+    .skip-link {position:fixed; top:-80px; left:15px; z-index:100; padding:12px 18px; border-radius:10px; background:var(--paper)}
+    .skip-link:focus {top:10px}
+    .background {position:fixed; inset:0; overflow:hidden; z-index:-1; pointer-events:none; background:radial-gradient(ellipse at 16% 12%,#fffafc,transparent 57%),radial-gradient(ellipse at 93% 78%,#ffe5f2,transparent 59%),#fff3f8}
+    .background::after {content:""; position:absolute; inset:0; opacity:.18; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.18' filter='url(%23n)'/%3E%3C/svg%3E")}
+    .petal {position:absolute; left:var(--x); top:-25px; width:10px; height:16px; border-radius:80% 20% 70% 30%; background:linear-gradient(140deg,#fff8fc,#f0b6d0); opacity:0; animation:fall var(--duration) linear infinite; animation-delay:var(--delay)}
+    @keyframes fall {5% {opacity:.58} 85% {opacity:.45} 100% {transform:translate(45px,105vh) rotate(220deg); opacity:0}}
+    .topbar {position:fixed; top:0; left:0; right:0; z-index:50; border-bottom:1px solid #f0cfdf70; background:#fff6faf0; padding:calc(9px + env(safe-area-inset-top,0px)) max(17px,env(safe-area-inset-right,0px)) 9px max(17px,env(safe-area-inset-left,0px)); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px)}
+    .topbar-inner {max-width:980px; margin:auto; display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .brand {display:inline-flex; align-items:center; gap:8px; text-decoration:none; min-height:44px; font:italic 20px var(--serif); color:#945775; white-space:nowrap}
+    .brand .icon {width:18px; color:var(--rose)}
+    .controls {display:flex; gap:7px}
+    .control {min-width:44px; min-height:44px; border-radius:99px; border:1px solid #efc7d980; background:#fffdfefa; color:#7d405f; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:8px 13px; font-size:12px}
+    .control:hover {background:#fff0f7}
+    .motion-control {padding:10px}
+    .music-control .pause-icon {display:none}
+    .music-control[aria-pressed="true"] {border-color:#eab4cc; background:#ffe4f0}
+    .music-control[aria-pressed="true"] .play-icon {display:none}
+    .music-control[aria-pressed="true"] .pause-icon {display:block}
+    .music-control[aria-busy="true"] {opacity:.7}
+    .progress {position:fixed; top:0; left:0; height:2px; width:100%; z-index:55; pointer-events:none}
+    .progress span {display:block; height:100%; background:#b47890; transform:scaleX(0); transform-origin:left}
+    .toast {position:fixed; z-index:60; top:calc(77px + env(safe-area-inset-top,0px)); left:50%; transform:translateX(-50%); width:max-content; max-width:calc(100% - 32px); padding:13px 18px; background:var(--paper); border:1px solid var(--line); border-radius:12px; box-shadow:0 7px 30px #724a5b12; font-size:12px; line-height:1.6; text-align:center}
+
+    /* ENTRADA: el sobre es una invitación a leer, sin pedir una respuesta. */
+    .cover {min-height:100vh; min-height:100svh; display:grid; place-items:center; padding:calc(105px + env(safe-area-inset-top,0px)) 26px calc(65px + env(safe-area-inset-bottom,0px)); position:relative; overflow:hidden}
+    .cover-inner {width:100%; max-width:660px; text-align:center; position:relative}
+    .eyebrow {margin:0 0 17px; color:#8e5d75; font:10px/1.6 var(--sans); letter-spacing:.25em; text-transform:uppercase}
+    h1 {font:italic 70px/1.03 var(--serif); font-weight:normal; color:var(--rose); letter-spacing:-.045em; margin:0 0 12px; text-wrap:balance}
+    .intro {font:italic 18px/1.7 var(--serif); color:#93617b; margin:0}
+    .envelope {position:relative; width:100%; max-width:330px; height:216px; height:min(216px,calc((100vw - 52px) * .6536)); margin:43px auto 39px; perspective:1100px; filter:drop-shadow(0 15px 22px #b9759810); animation:breathe 9s ease-in-out infinite}
+    .envelope-back {position:absolute; inset:0; background:#fbe0ec; border:1px solid #edc7d9; border-radius:7px}
+    .insert {position:absolute; top:10%; left:7%; width:86%; height:79%; border:1px solid #e7d5d8; background:var(--paper); border-radius:4px; display:grid; place-items:center; transition:transform .85s cubic-bezier(.2,.65,.2,1)}
+    .insert::before {content:""; position:absolute; inset:7px; border:1px dashed #e3bfce; border-radius:2px}
+    .insert span {font:italic 38px var(--serif); color:#a1637b; transform:rotate(-4deg)}
+    .envelope-front {position:absolute; inset:0; border-radius:6px; background:linear-gradient(28deg,#fff1f7,#f9d4e4); clip-path:polygon(0 0,50% 60%,100% 0,100% 100%,0 100%); z-index:2}
+    .envelope-front::before {content:""; position:absolute; inset:0; background:#ffecf5; clip-path:polygon(0 100%,50% 54%,100% 100%)}
+    .flap {position:absolute; inset:0 0 37%; background:linear-gradient(#fffdfd,#fce2ee); clip-path:polygon(0 0,100% 0,50% 100%); z-index:3; transform-origin:50% 0; transition:transform .7s ease,z-index .7s}
+    .seal {position:absolute; top:49%; left:50%; transform:translate(-50%,-50%); z-index:4; width:45px; height:45px; display:grid; place-items:center; background:radial-gradient(circle at 30% 20%,#f8c2d8,#e99dc0); border:3px double #ffecf4; border-radius:50%; box-shadow:0 3px 7px #b76e9618; color:#894264; transition:opacity .3s}
+    .seal .icon {width:19px; height:19px; stroke-width:1.2}
+    .envelope.is-open .flap {transform:rotateX(170deg); z-index:0}
+    .envelope.is-open .insert {transform:translateY(-28%)}
+    .envelope.is-open .seal {opacity:0}
+    .open-link {display:inline-flex; align-items:center; justify-content:center; gap:18px; min-height:52px; padding:14px 27px; background:#f5c8d9; color:#6c3850; border:1px solid #efbcd2; text-decoration:none; border-radius:99px; font-size:13px; box-shadow:0 6px 18px #d991af18; transition:transform .25s,background .25s}
+    .open-link:hover {background:#efb9d1; transform:translateY(-2px)}
+    .cover-note {font:11px/1.7 var(--sans); color:#94637d; margin:16px 0 0}
+    .flower-mark {position:absolute; width:47px; height:47px; color:#bc8ba1; opacity:.65; pointer-events:none}
+    .flower-one {left:max(0px,calc(50% - 230px)); top:100px; transform:rotate(-20deg)}
+    .flower-two {right:max(0px,calc(50% - 230px)); bottom:121px; width:30px; transform:rotate(22deg); opacity:.5}
+    @keyframes breathe {50% {transform:translateY(-5px) rotate(.4deg)}}
+
+    /* CARTA: las palabras originales están únicamente dentro de letterText. */
+    .letter-section {padding:30px 18px calc(80px + env(safe-area-inset-bottom,0px)); position:relative; scroll-margin-top:0}
+    .letter-paper {position:relative; width:100%; max-width:730px; margin:auto; padding:53px 28px 43px; background:var(--paper); border:1px solid #f0d4e1; border-radius:7px; box-shadow:0 15px 60px #b9749210,5px 6px 0 -1px #ffe9f3,5px 6px 0 0 #f1cdde; isolation:isolate}
+    .letter-paper::before {content:""; position:absolute; inset:11px; border:1px solid #eddae040; border-radius:4px; z-index:-1; pointer-events:none}
+    .ribbon {position:absolute; top:-16px; left:50%; transform:translateX(-50%) rotate(-5deg); width:68px; height:43px; color:#c58ca4}
+    .letter-heading {margin:0 0 25px; display:flex; gap:13px; align-items:center; justify-content:center; color:#987584; font:10px var(--sans); letter-spacing:.17em; text-transform:uppercase}
+    .letter-heading::before,.letter-heading::after {content:""; height:1px; width:39px; background:#e1bdce}
+    .letter-text {font:18px/1.9 var(--serif); overflow-wrap:break-word}
+    .letter-text p {margin:0 0 27px}
+    .letter-text p:last-child {margin-bottom:0}
+    .salutation {display:block; margin-bottom:17px; color:#ad5b80; font:italic 35px/1.3 var(--serif)}
+    .letter-end {display:flex; justify-content:center; align-items:center; gap:17px; margin:34px 0 0; color:#b68299}
+    .letter-end::before,.letter-end::after {content:""; height:1px; width:43px; background:#e7cbd7}
+    .letter-end .icon {width:23px; height:26px; stroke-width:1.1}
+    .return-link {display:flex; align-items:center; justify-content:center; gap:8px; width:max-content; margin:28px auto 0; padding:10px 8px; min-height:44px; font:11px var(--sans); color:#8c6c7a; text-decoration:none}
+    .return-link:hover {color:var(--rose)}
+    .return-link .icon {width:15px; height:15px; transform:rotate(-90deg)}
+    .entering {opacity:0; transform:translateY(13px); transition:opacity .7s,transform .7s}
+    .entering.is-visible {opacity:1; transform:none}
+    .motion-paused *,.motion-paused *::before,.motion-paused *::after {animation:none!important; transition:none!important}
+    html.motion-paused {scroll-behavior:auto}
+    .motion-paused .petal {display:none}
+    .motion-paused .entering {opacity:1; transform:none}
+    .page-hidden * {animation-play-state:paused!important}
+    @media (min-width:700px) {
+      .topbar {padding:calc(10px + env(safe-area-inset-top,0px)) max(35px,env(safe-area-inset-right,0px)) 10px max(35px,env(safe-area-inset-left,0px))}
+      .cover {padding:calc(110px + env(safe-area-inset-top,0px)) 40px calc(68px + env(safe-area-inset-bottom,0px))}
+      h1 {font-size:96px}
+      .intro {font-size:20px}
+      .envelope {width:370px; max-width:370px; height:242px; margin:47px auto 40px}
+      .flower-one {left:65px; top:130px}
+      .flower-two {right:60px; bottom:135px; width:36px}
+      .letter-section {padding:37px 35px 100px}
+      .letter-paper {padding:62px 67px 47px}
+      .letter-text {font-size:20px; line-height:1.95}
+      .salutation {font-size:43px; margin-bottom:23px}
+      .letter-text p {margin-bottom:31px}
+    }
+    @media (max-width:360px) {
+      h1 {font-size:60px}
+      .cover {padding:calc(96px + env(safe-area-inset-top,0px)) 24px calc(40px + env(safe-area-inset-bottom,0px))}
+      .brand {font-size:18px}
+      .envelope {margin-top:35px; margin-bottom:29px}
+      .letter-paper {padding-inline:24px}
+      .letter-text {font-size:17px}
+    }
+    @media (max-height:700px) and (max-width:699px) {
+      h1 {font-size:57px}
+      .eyebrow {margin-bottom:10px}
+      .intro {font-size:17px}
+      .envelope {width:235px; height:154px; margin:26px auto 24px}
+      .cover-note {margin-top:11px}
+    }
+    @media (prefers-reduced-motion:reduce) {
+      html {scroll-behavior:auto}
+      *,*::before,*::after {animation:none!important; transition:none!important}
+      .petal {display:none}
+      .entering {opacity:1; transform:none}
+    }
+    @media print {
+      @page {margin:22mm}
+      body {background:#fff; color:#222}
+      .background,.topbar,.cover,.progress,.skip-link,.toast,.ribbon,.return-link {display:none!important}
+      .letter-section,.letter-paper {padding:0; margin:0; max-width:none; border:0; box-shadow:none; background:white}
+      .letter-paper::before {display:none}
+      .letter-heading {display:none}
+      .letter-text {font:12pt/1.8 Georgia,serif}
+      .salutation {font-size:23pt; color:#774454}
+      .letter-end {margin-top:22px}
+      .entering {opacity:1!important; transform:none!important}
+    }
+  </style>
+</head>
+<body>
+  <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="i-envelope" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+      <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13M9 9l11-2"/><ellipse cx="5.8" cy="18" rx="3.2" ry="2.4"/><ellipse cx="16.8" cy="16" rx="3.2" ry="2.4"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="2.5"/></symbol>
+      <symbol id="i-motion" viewBox="0 0 24 24"><path d="M4 7c4-5 7 5 11 0s7 1 5 3M3 13c5-5 8 6 12 0M4 19c3-4 5 1 8 0"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21C8 18 2 14 2 8a5 5 0 0 1 10-1A5 5 0 0 1 22 8c0 6-6 10-10 13Z"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+      <symbol id="i-flower" viewBox="0 0 60 60"><g fill="currentColor" fill-opacity=".10" stroke="currentColor" stroke-width="1.2"><path d="M30 26C15 20 13 5 25 8l5 4 5-4c12-3 10 12-5 18Z"/><path d="M34 28c1-16 15-23 16-11l-2 6 5 3c7 10-7 13-19 2Z"/><path d="M34 33c16-4 27 7 16 12l-6-1-2 6c-8 10-15-2-8-17Z"/><path d="M28 35c9 13 2 27-6 17l-1-6-6-1c-12-5-3-15 13-10Z"/><path d="M25 29C15 42 0 39 7 29l6-3-1-6c2-13 14-7 13 9Z"/><circle cx="30" cy="30" r="3" fill-opacity=".3"/></g></symbol>
+      <symbol id="i-bow" viewBox="0 0 86 52"><g stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M40 24C18-1 5 7 8 24s18 10 32 3M46 24C67-1 81 7 78 24S59 34 46 27" fill="#f2d3df"/><path d="M40 26 20 48l15-4 5 5 4-22M46 26l19 22-13-4-5 5-5-22" fill="#f2d3df"/><rect x="37" y="19" width="13" height="13" rx="5" fill="#fae8ee"/></g></symbol>
+    </defs>
+  </svg>
+  <div class="background" aria-hidden="true" id="petals"></div>
+  <a class="skip-link" href="#carta">Ir a la carta</a>
+  <div class="progress" aria-hidden="true"><span id="progressLine"></span></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#inicio"><svg class="icon" aria-hidden="true"><use href="#i-envelope"/></svg>Para July</a>
+      <div class="controls">
+        <button class="control motion-control" id="motionButton" type="button" aria-label="Pausar animaciones" aria-pressed="false" title="Pausar animaciones" hidden><svg class="icon" aria-hidden="true"><use href="#i-motion"/></svg></button>
+        <button class="control music-control" id="musicButton" type="button" aria-label="Reproducir música" aria-pressed="false" hidden><svg class="icon play-icon" aria-hidden="true"><use href="#i-music"/></svg><svg class="icon pause-icon" aria-hidden="true"><use href="#i-pause"/></svg><span id="musicLabel">Música</span></button>
+      </div>
+    </div>
+  </header>
+  <div class="toast" id="status" role="status" hidden></div>
+  <!-- Coloca tu archivo musica.mp3 junto a index.html. No hay melodía incluida. -->
+  <audio id="music" loop preload="auto"></audio>
+  <main>
+    <section class="cover" id="inicio" aria-labelledby="coverTitle">
+      <div class="cover-inner">
+        <svg class="flower-mark flower-one" aria-hidden="true"><use href="#i-flower"/></svg>
+        <svg class="flower-mark flower-two" aria-hidden="true"><use href="#i-flower"/></svg>
+        <p class="eyebrow">Unas palabras para ti</p>
+        <h1 id="coverTitle">Para July</h1>
+        <p class="intro">Guardadas con cariño.</p>
+        <div class="envelope" id="envelope" aria-hidden="true"><div class="envelope-back"></div><div class="insert"><span>July</span></div><div class="envelope-front"></div><div class="flap"></div><div class="seal"><svg class="icon"><use href="#i-heart"/></svg></div></div>
+        <a class="open-link" id="openLetter" href="#carta">Abrir la carta<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <p class="cover-note">A tu ritmo.</p>
+      </div>
+    </section>
+    <section class="letter-section" id="carta" aria-labelledby="letterHeading">
+      <article class="letter-paper" id="letterPaper">
+        <svg class="ribbon" aria-hidden="true"><use href="#i-bow"/></svg>
+        <h2 class="letter-heading" id="letterHeading" tabindex="-1">Una carta para ti</h2>
+        <!-- TEXTO ORIGINAL: se corrigió únicamente la puntuación. -->
+        <div class="letter-text" id="letterText">
+          <p><span class="salutation">July,</span> quiero prometerte una cosa; ya sabrás que las cosas que prometo son pocas, porque las clavo en mi corazón y las intento cumplir.</p>
+          <p>Por ello, quiero prometerte que no me iré: no te dejare en cualquier situación que se presente y estaré en cada momento que se manifieste.</p>
+          <p>Claro que entiendo si no me crees, aunque eso no cambie lo que digo y siento; lo que te prometo es de manera incondicional, así que no hay por qué darme una respuesta, y no solo serán palabras, sino que lo demostraré con acciones en cada situación que aparezca.</p>
+        </div>
+        <div class="letter-end" aria-hidden="true"><svg class="icon"><use href="#i-flower"/></svg></div>
+      </article>
+      <a class="return-link" href="#inicio"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Volver al sobre</a>
+    </section>
+  </main>
+  <script>
+  (() => {
+    'use strict';
+    /* CONFIGURACIÓN: coloca tu canción musica.mp3 junto a index.html.
+       Si el archivo se llama de otra manera, cambia musicFile por ese nombre.
+       autoMusic: true intenta sonar al entrar o con el primer toque permitido.
+       autoMusic: false empieza solamente mediante el botón de música. */
+    const CONFIG = { musicFile:'musica.mp3', musicVolume:.22, autoMusic:true };
+    const root = document.documentElement;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let systemReduced = reduced.matches;
+    let manualMotionPause = false;
+    try { manualMotionPause = sessionStorage.getItem('july-promesa-motion-paused') === 'true'; } catch (_) {}
+    const motionButton = document.getElementById('motionButton');
+    const motionOff = () => systemReduced || manualMotionPause;
+    const status = document.getElementById('status');
+    let toastTimer;
+    function announce(text) {
+      clearTimeout(toastTimer);
+      status.textContent = text; status.hidden = false;
+      toastTimer = setTimeout(() => { status.hidden = true; }, 6500);
+    }
+    function updateMotion(event) {
+      if (event && typeof event.matches === 'boolean') systemReduced = event.matches;
+      root.classList.toggle('motion-paused', motionOff());
+      motionButton.setAttribute('aria-pressed', String(motionOff()));
+      const label = systemReduced ? 'Movimiento reducido del dispositivo' : manualMotionPause ? 'Reanudar animaciones' : 'Pausar animaciones';
+      motionButton.setAttribute('aria-label', label); motionButton.title = label;
+    }
+    motionButton.addEventListener('click', () => {
+      if (systemReduced) { announce('El movimiento reducido de tu dispositivo mantiene las animaciones en pausa.'); return; }
+      manualMotionPause = !manualMotionPause;
+      try { sessionStorage.setItem('july-promesa-motion-paused', String(manualMotionPause)); } catch (_) {}
+      updateMotion();
+    });
+    if (reduced.addEventListener) reduced.addEventListener('change', updateMotion);
+    else if (reduced.addListener) reduced.addListener(updateMotion);
+    updateMotion(); motionButton.hidden = false;
+    const petals = document.getElementById('petals');
+    for (let i = 0; i < 10; i++) {
+      const petal = document.createElement('span'); petal.className = 'petal';
+      const x = i % 2 ? 83 + (i * 7 % 14) : 1 + (i * 3 % 13);
+      petal.style.setProperty('--x', `${x}%`);
+      petal.style.setProperty('--duration', `${22 + i % 4 * 4}s`);
+      petal.style.setProperty('--delay', `${-i * 3.6}s`);
+      petals.appendChild(petal);
+    }
+
+    // Audio: estado real, pausa persistente y restricciones del navegador.
+    const music = document.getElementById('music');
+    const musicButton = document.getElementById('musicButton');
+    const musicLabel = document.getElementById('musicLabel');
+    if (CONFIG.musicFile) music.src = CONFIG.musicFile;
+    music.volume = CONFIG.musicVolume;
+    let userPaused = false;
+    try { userPaused = sessionStorage.getItem('july-promesa-music-paused') === 'true'; } catch (_) {}
+    let desired = CONFIG.autoMusic && !userPaused;
+    let waitingGesture = desired;
+    let pending = false, attemptId = 0, loadTimer, hasPlayed = false, resumeOnReturn = false;
+    function syncAudio() {
+      const playing = !music.paused && !music.ended;
+      musicButton.setAttribute('aria-pressed', String(playing));
+      musicButton.setAttribute('aria-label', playing ? 'Pausar música' : 'Reproducir música');
+      musicLabel.textContent = playing ? 'Pausar' : 'Música';
+    }
+    function finishAttempt() {
+      clearTimeout(loadTimer); pending = false;
+      musicButton.removeAttribute('aria-busy'); syncAudio();
+    }
+    async function playMusic() {
+      if (!desired || pending || !music.paused || document.hidden) return;
+      waitingGesture = false;
+      const attempt = ++attemptId;
+      pending = true; musicButton.setAttribute('aria-busy', 'true'); musicLabel.textContent = 'Cargando…';
+      musicButton.setAttribute('aria-label', 'Cancelar inicio de música');
+      if (music.error) music.load();
+      loadTimer = setTimeout(() => {
+        if (attempt !== attemptId || !pending) return;
+        attemptId++; waitingGesture = false; music.pause(); finishAttempt();
+        announce('La música tarda en cargar. Puedes volver a intentarlo desde su botón.');
+      }, 15000);
+      try {
+        await music.play();
+        if (attempt === attemptId) finishAttempt();
+      } catch (error) {
+        if (attempt !== attemptId) return;
+        finishAttempt();
+        if (error.name === 'NotAllowedError') waitingGesture = desired;
+        else if (error.name !== 'AbortError') announce('La música no pudo reproducirse. Puedes seguir leyendo y volver a intentarlo.');
+      }
+    }
+    music.addEventListener('playing', () => {
+      if (!desired || document.hidden) { music.pause(); return; }
+      hasPlayed = true; waitingGesture = false; finishAttempt(); status.hidden = true;
+    });
+    music.addEventListener('pause', syncAudio);
+    music.addEventListener('ended', syncAudio);
+    musicButton.addEventListener('click', () => {
+      if (pending || !music.paused) {
+        desired = false; waitingGesture = false; resumeOnReturn = false; attemptId++;
+        try { sessionStorage.setItem('july-promesa-music-paused', 'true'); } catch (_) {}
+        music.pause(); finishAttempt();
+      } else {
+        desired = true;
+        try { sessionStorage.setItem('july-promesa-music-paused', 'false'); } catch (_) {}
+        playMusic();
+      }
+    });
+    function unlockMusic(event) {
+      if (!event.isTrusted || !waitingGesture || !desired) return;
+      if (event.target instanceof Element && event.target.closest('#musicButton,#motionButton')) return;
+      if (event.type === 'keydown' && (event.repeat || !['Enter',' '].includes(event.key))) return;
+      // Se llama durante el gesto, antes de esperar cargas o animaciones: necesario en iOS.
+      playMusic();
+    }
+    ['pointerup','touchend','click','keydown'].forEach(type => document.addEventListener(type, unlockMusic, { passive:true }));
+    function suspendMusic() {
+      resumeOnReturn = resumeOnReturn || (desired && (hasPlayed || pending));
+      attemptId++; music.pause(); finishAttempt();
+    }
+    function resumeMusic() {
+      if (resumeOnReturn && desired && !document.hidden) { resumeOnReturn = false; playMusic(); }
+    }
+    document.addEventListener('visibilitychange', () => {
+      document.body.classList.toggle('page-hidden', document.hidden);
+      if (document.hidden) suspendMusic(); else resumeMusic();
+    });
+    window.addEventListener('pagehide', suspendMusic);
+    window.addEventListener('pageshow', resumeMusic);
+    musicButton.hidden = false;
+    if (desired) playMusic();
+
+    // La carta también se puede leer sin JavaScript y sin sonido.
+    const paper = document.getElementById('letterPaper');
+    if ('IntersectionObserver' in window && !motionOff()) {
+      const observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) { paper.classList.add('is-visible'); observer.disconnect(); }
+      }, { threshold:0, rootMargin:'0px 0px 30px 0px' });
+      if (paper.getBoundingClientRect().top > innerHeight) { paper.classList.add('entering'); observer.observe(paper); }
+    }
+    let navigationTimer;
+    document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', event => {
+      const hash = link.getAttribute('href');
+      const target = document.querySelector(hash);
+      if (!target) return;
+      event.preventDefault(); clearTimeout(navigationTimer);
+      if (link.id === 'openLetter') document.getElementById('envelope').classList.add('is-open');
+      const navigate = () => {
+        paper.classList.add('is-visible');
+        try { if (location.hash !== hash) history.pushState(null, '', hash); } catch (_) { location.hash = hash; }
+        const heading = target.querySelector('h1,h2');
+        if (heading) { heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll:true }); }
+        target.scrollIntoView({ behavior:motionOff() ? 'auto' : 'smooth', block:'start' });
+      };
+      if (link.id === 'openLetter' && !motionOff()) navigationTimer = setTimeout(navigate, 380);
+      else navigate();
+    }));
+    const progress = document.getElementById('progressLine');
+    let scrollFrame = 0;
+    function updateProgress() {
+      scrollFrame = 0;
+      const max = Math.max(1, root.scrollHeight - innerHeight);
+      progress.style.transform = `scaleX(${Math.max(0, Math.min(1, scrollY / max))})`;
+    }
+    function requestProgress() { if (!scrollFrame) scrollFrame = requestAnimationFrame(updateProgress); }
+    window.addEventListener('scroll', requestProgress, { passive:true });
+    window.addEventListener('resize', requestProgress, { passive:true });
+    updateProgress();
+  })();
+  </script>
+</body>
+</html>
